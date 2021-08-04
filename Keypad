@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Keypad</title>
+    //no seperate CSS file
+		<style>  
+       .key {
+  				 height: 50px;
+  				 width: 75px;
+           border-radius: 15px;
+					 }
+
+			button span {
+  				display: block;
+  				margin-top: 5px;
+  				font-size: 13px;
+				}
+
+			#result {
+ 				   width: 225px;
+  				 height: 45px;
+           font-size: 20px;
+  				 margin-left:2px;
+           border-radius: 12px;
+					}
+       body{
+         	padding-top:20%;
+          padding-left:25%;
+       	 }
+		</style>
+	</head>
+	<body> //table
+		 <table id="telephone">
+  			<tr>
+    			<td colspan="3">
+      				<input type="text" id="result" readonly/>
+   				</td>
+  			</tr>
+  			<tr>
+    			<td>
+      				<button data-value="1" class="key">1
+        				<span>. , !</span>
+      				</button>
+    			</td>
+    			<td>
+      				<button data-value="2" class="key">2
+        				<span>a b c</span>
+      				</button>
+    			</td>
+    			<td>
+      				<button data-value="3" class="key">3
+        				<span>d e f</span>
+      				</button>
+    			</td>
+           </tr>
+  			<tr>
+    			<td>
+      				<button data-value="4" class="key">4
+        				<span>g h i</span>
+      				</button>
+    			</td>
+    			<td>
+      				<button data-value="5" class="key">5
+        				<span>j k l</span>
+      				</button>
+    			</td>
+    			<td>
+      				<button data-value="6" class="key">6
+        				<span>m n o</span>
+      				</button>
+    			</td>
+  			</tr>
+  			<tr>
+    			<td>
+                		<button data-value="7" class="key">7
+      					<span>p q r s</span>
+      				</button>
+    			</td>
+    			<td>
+      				<button data-value="8" class="key">8
+        				<span>t u v</span>
+      				</button>
+    			</td>
+    			<td>
+      				<button data-value="9" class="key">9
+        				<span>w x y z</span>
+      				</button>
+    			</td>
+  			</tr>
+  			<tr>
+    			<td>
+                <button data-value="*" class="key" style="padding-top: 12px; font-size:23px;">*</button>
+          </td>
+    			<td>
+                <button data-value="0" class="key" style="font-size:18px;">0</button>
+          </td>
+    			<td>
+                <button data-value="#" class="key" style="font-size:16px;">#</button>
+          </td>
+  			</tr>
+		</table>
+    
+    //scripts start
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        		var to = 500,timeout,count = 0, lKey, keyPressT;
+
+				    $("#telephone button").bind("mousedown", function() 
+            {
+  					  var $this = $(this),      
+      				$result = $('#result'),
+      				val = $result.val(),
+      				b_p = $this.attr("data-value");
+              
+              //for long press, numbers will apear
+  					  keyPressT = setTimeout(function() 
+              {
+    					val += b_p;
+    					$result.val(val);
+    					keyPressT = null;
+  					  }, 500);
+  
+				    }).bind("mouseup", function(event) 
+            {
+  					  clearTimeout(keyPressT);
+ 
+ 					    if (!keyPressT) 
+              {
+    					  return false;
+  					  }
+  				    var $this = $(this),
+      			  $result = $('#result'),
+      			  val = $result.val(),
+      			  b_p = $this.attr("data-value");
+
+  				    if (lKey !== b_p) 
+              {
+                //new key pressed then the counter gets reset
+    				    reset();  
+  				    }
+  				
+                if (count !== 0 && lKey === b_p) 
+                {
+                  // changing the value when the value is being pressed multipple times
+    				      val = val.substring(0, val.length - 1);
+  				      }
+                
+                if(b_p=='0')
+                {
+                  // clear screen when 0 is pressed
+                  $result.val(null);
+                }
+
+  				      val += add(b_p);
+  				      $result.val(val);
+
+  				      clearTimeout(timeout);
+  				      count++;
+
+  				      lKey = b_p;
+
+
+  				      timeout = setTimeout(reset, to);
+			       });
+
+			      function add(b_p) 
+           {
+ 					    return keys[b_p][count % keys[b_p].length];
+			     }
+
+			     function reset() 
+           {
+  				    count = 0;
+  				    lKey = null;
+			     }
+
+			     var keys = {
+  					'1': ['.', ',', '!'],
+  					'2': ['a', 'b', 'c'],
+  					'3': ['d', 'e', 'f'],
+  					'4': ['g', 'h', 'i'],
+  					'5': ['j', 'k', 'l'],
+  					'6': ['m', 'n', 'o'],
+ 				    '7': ['p', 'q', 'r','s'],
+  					'8': ['t', 'u', 'v'],
+ 				    '9': ['w', 'x','y','z'],
+            '*': ['*'],
+            '#': ['#']
+			    };
+           
+      </script>
+	</body>
+</html>
